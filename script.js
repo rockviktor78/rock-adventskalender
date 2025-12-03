@@ -50,15 +50,187 @@ const displayCurrentDate = () => {
 const loadBands = async () => {
   showLoading();
 
-  // Temporäre Platzhalter-Daten
-  appState.bands = Array.from({ length: 24 }, (_, i) => ({
+  // Temporäre Platzhalter-Daten mit bekannten Rock-Bands
+  const rockBands = [
+    {
+      name: "Led Zeppelin",
+      album: "Led Zeppelin IV",
+      year: 1971,
+      genre: "Hard Rock",
+      country: "England",
+    },
+    {
+      name: "AC/DC",
+      album: "Back in Black",
+      year: 1980,
+      genre: "Hard Rock",
+      country: "Australien",
+    },
+    {
+      name: "Queen",
+      album: "A Night at the Opera",
+      year: 1975,
+      genre: "Classic Rock",
+      country: "England",
+    },
+    {
+      name: "Pink Floyd",
+      album: "The Dark Side of the Moon",
+      year: 1973,
+      genre: "Progressive Rock",
+      country: "England",
+    },
+    {
+      name: "The Rolling Stones",
+      album: "Exile on Main St.",
+      year: 1972,
+      genre: "Classic Rock",
+      country: "England",
+    },
+    {
+      name: "Deep Purple",
+      album: "Machine Head",
+      year: 1972,
+      genre: "Hard Rock",
+      country: "England",
+    },
+    {
+      name: "Black Sabbath",
+      album: "Paranoid",
+      year: 1970,
+      genre: "Heavy Metal",
+      country: "England",
+    },
+    {
+      name: "Metallica",
+      album: "Master of Puppets",
+      year: 1986,
+      genre: "Heavy Metal",
+      country: "USA",
+    },
+    {
+      name: "Nirvana",
+      album: "Nevermind",
+      year: 1991,
+      genre: "Grunge",
+      country: "USA",
+    },
+    {
+      name: "The Beatles",
+      album: "Abbey Road",
+      year: 1969,
+      genre: "Classic Rock",
+      country: "England",
+    },
+    {
+      name: "The Who",
+      album: "Who's Next",
+      year: 1971,
+      genre: "Classic Rock",
+      country: "England",
+    },
+    {
+      name: "Iron Maiden",
+      album: "The Number of the Beast",
+      year: 1982,
+      genre: "Heavy Metal",
+      country: "England",
+    },
+    {
+      name: "Guns N' Roses",
+      album: "Appetite for Destruction",
+      year: 1987,
+      genre: "Hard Rock",
+      country: "USA",
+    },
+    {
+      name: "Aerosmith",
+      album: "Toys in the Attic",
+      year: 1975,
+      genre: "Hard Rock",
+      country: "USA",
+    },
+    {
+      name: "The Doors",
+      album: "L.A. Woman",
+      year: 1971,
+      genre: "Classic Rock",
+      country: "USA",
+    },
+    {
+      name: "Jimi Hendrix",
+      album: "Are You Experienced",
+      year: 1967,
+      genre: "Classic Rock",
+      country: "USA",
+    },
+    {
+      name: "Van Halen",
+      album: "1984",
+      year: 1984,
+      genre: "Hard Rock",
+      country: "USA",
+    },
+    {
+      name: "Ramones",
+      album: "Ramones",
+      year: 1976,
+      genre: "Punk Rock",
+      country: "USA",
+    },
+    {
+      name: "Sex Pistols",
+      album: "Never Mind the Bollocks",
+      year: 1977,
+      genre: "Punk Rock",
+      country: "England",
+    },
+    {
+      name: "Scorpions",
+      album: "Blackout",
+      year: 1982,
+      genre: "Hard Rock",
+      country: "Deutschland",
+    },
+    {
+      name: "U2",
+      album: "The Joshua Tree",
+      year: 1987,
+      genre: "Alternative",
+      country: "Irland",
+    },
+    {
+      name: "Radiohead",
+      album: "OK Computer",
+      year: 1997,
+      genre: "Alternative",
+      country: "England",
+    },
+    {
+      name: "Pearl Jam",
+      album: "Ten",
+      year: 1991,
+      genre: "Grunge",
+      country: "USA",
+    },
+    {
+      name: "Foo Fighters",
+      album: "The Colour and the Shape",
+      year: 1997,
+      genre: "Alternative",
+      country: "USA",
+    },
+  ];
+
+  appState.bands = rockBands.map((band, i) => ({
     day: i + 1,
-    name: `Band ${i + 1}`,
-    album: `Album ${i + 1}`,
-    genre: getRandomGenre(),
-    year: 1970 + i,
-    country: "Deutschland",
+    name: band.name,
+    album: band.album,
+    genre: band.genre,
+    year: band.year,
+    country: band.country,
     coverUrl: `https://picsum.photos/300/300?random=${i + 1}`,
+    audioUrl: null, // Wird später durch MusicBrainz/Spotify API ersetzt
   }));
 
   hideLoading();
@@ -285,6 +457,8 @@ const populateModal = (band) => {
   const coverImg = document.getElementById("modalCover");
   coverImg.src = band.coverUrl || "";
   coverImg.alt = `${band.name} - ${band.album}`;
+
+  updateAudioPlayer(band);
 };
 
 /**
@@ -302,10 +476,39 @@ const showModal = () => {
  * @function closeModal
  */
 const closeModal = () => {
+  pauseAudio();
   const modal = document.getElementById("modalOverlay");
   modal.classList.remove("modal--active");
   document.body.style.overflow = "";
   appState.selectedDoor = null;
+};
+
+/**
+ * Aktualisiert den Audio-Player mit Band-Musik
+ * @function updateAudioPlayer
+ * @param {Object} band - Band-Daten
+ */
+const updateAudioPlayer = (band) => {
+  const audioPlayer = document.getElementById("modalAudioPlayer");
+  const audioSource = document.getElementById("modalAudioSource");
+  const audioContainer = document.getElementById("modalAudioContainer");
+
+  if (band.audioUrl) {
+    audioSource.src = band.audioUrl;
+    audioPlayer.load();
+    audioContainer.style.display = "block";
+  } else {
+    audioContainer.style.display = "none";
+  }
+};
+
+/**
+ * Pausiert die Audio-Wiedergabe
+ * @function pauseAudio
+ */
+const pauseAudio = () => {
+  const audioPlayer = document.getElementById("modalAudioPlayer");
+  audioPlayer.pause();
 };
 
 /**
