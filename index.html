@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Rock Adventskalender 2025 - Entdecke jeden Tag eine legendäre Rock-Band"
+    />
+    <title>Rock Adventskalender 2025</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__container">
+        <div class="header__logo">
+          <span class="header__icon">🎸</span>
+          <h1 class="header__title">Rock Adventskalender 2025</h1>
+        </div>
+        <div class="header__date">
+          <span id="currentDate" class="header__current-date"></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="advent-calendar" id="adventCalendar">
+        <!-- Türchen werden dynamisch generiert -->
+      </div>
+
+      <div class="loading" id="loadingState">
+        <div class="loading__spinner"></div>
+        <p class="loading__text">Lade Rock-Bands...</p>
+      </div>
+
+      <div class="error" id="errorState">
+        <p class="error__message"></p>
+        <button class="error__retry" id="retryButton">Erneut versuchen</button>
+      </div>
+    </main>
+
+    <div class="modal" id="modalOverlay">
+      <div class="modal__backdrop"></div>
+      <div class="modal__container">
+        <button class="modal__close" id="modalClose" aria-label="Schließen">
+          ✕
+        </button>
+
+        <div class="modal__content" id="modalContent">
+          <div class="modal__image-wrapper">
+            <img class="modal__cover" id="modalCover" alt="Album Cover" />
+          </div>
+
+          <div class="modal__details">
+            <h2 class="modal__band-name" id="modalBandName"></h2>
+            <h3 class="modal__album-title" id="modalAlbumTitle"></h3>
+
+            <div class="modal__info">
+              <div class="modal__info-item">
+                <span class="modal__label">Genre:</span>
+                <span class="modal__value" id="modalGenre"></span>
+              </div>
+              <div class="modal__info-item">
+                <span class="modal__label">Jahr:</span>
+                <span class="modal__value" id="modalYear"></span>
+              </div>
+              <div class="modal__info-item">
+                <span class="modal__label">Land:</span>
+                <span class="modal__value" id="modalCountry"></span>
+              </div>
+            </div>
+
+            <div class="modal__bio" id="modalBio"></div>
+          </div>
+        </div>
+
+        <div class="modal__navigation">
+          <button
+            class="modal__nav-button modal__nav-button--prev"
+            id="modalPrev"
+            aria-label="Vorheriges"
+          >
+            ‹
+          </button>
+          <button
+            class="modal__nav-button modal__nav-button--next"
+            id="modalNext"
+            aria-label="Nächstes"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p class="footer__text">Daten von MusicBrainz & Last.fm</p>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
