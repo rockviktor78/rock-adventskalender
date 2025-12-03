@@ -8,8 +8,8 @@
  * App State für den Adventskalender
  */
 const appState = {
-  currentDay: new Date().getDate(),
-  currentMonth: new Date().getMonth() + 1,
+  currentDay: 24, // Testweise auf 24 gesetzt um alle Türchen zu sehen
+  currentMonth: 12,
   selectedDoor: null,
   bands: [],
 };
@@ -58,6 +58,7 @@ const loadBands = async () => {
     genre: getRandomGenre(),
     year: 1970 + i,
     country: "Deutschland",
+    coverUrl: `https://picsum.photos/300/300?random=${i + 1}`,
   }));
 
   hideLoading();
@@ -162,12 +163,32 @@ const createDoorContent = (band) => {
   const content = document.createElement("div");
   content.className = "advent-calendar__content";
 
+  if (band.coverUrl) {
+    const cover = createCoverImage(band);
+    content.appendChild(cover);
+  }
+
   const bandName = document.createElement("div");
   bandName.className = "advent-calendar__band-name";
   bandName.textContent = band.name;
 
   content.appendChild(bandName);
   return content;
+};
+
+/**
+ * Erstellt das Cover-Image für ein Türchen
+ * @function createCoverImage
+ * @param {Object} band - Band-Daten
+ * @returns {HTMLElement} Image-Element
+ */
+const createCoverImage = (band) => {
+  const cover = document.createElement("img");
+  cover.className = "advent-calendar__cover";
+  cover.src = band.coverUrl;
+  cover.alt = `${band.name} - ${band.album}`;
+  cover.loading = "lazy";
+  return cover;
 };
 
 /**
@@ -260,6 +281,10 @@ const populateModal = (band) => {
   document.getElementById("modalGenre").textContent = band.genre;
   document.getElementById("modalYear").textContent = band.year;
   document.getElementById("modalCountry").textContent = band.country;
+
+  const coverImg = document.getElementById("modalCover");
+  coverImg.src = band.coverUrl || "";
+  coverImg.alt = `${band.name} - ${band.album}`;
 };
 
 /**
