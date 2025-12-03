@@ -4,6 +4,20 @@
  * @module script
  */
 
+import { getRandomRockTrack } from "./js/music-api.js";
+import { renderCalendar, isDoorUnlocked } from "./js/calendar.js";
+import {
+  openModal,
+  closeModal,
+  showPreviousDoor,
+  showNextDoor,
+} from "./js/modal.js";
+import {
+  displayCurrentDate,
+  showLoading,
+  hideLoading,
+} from "./js/ui-helpers.js";
+
 /**
  * App State für den Adventskalender
  */
@@ -22,24 +36,8 @@ const appState = {
 const initApp = async () => {
   displayCurrentDate();
   await loadBands();
-  renderCalendar();
+  renderCalendar(appState.bands, appState);
   setupEventListeners();
-};
-
-/**
- * Zeigt das aktuelle Datum im Header an
- * @function displayCurrentDate
- */
-const displayCurrentDate = () => {
-  const dateElement = document.getElementById("currentDate");
-  const today = new Date();
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  dateElement.textContent = today.toLocaleDateString("de-DE", options);
 };
 
 /**
@@ -230,158 +228,10 @@ const loadBands = async () => {
     year: band.year,
     country: band.country,
     coverUrl: `https://picsum.photos/300/300?random=${i + 1}`,
-    audioUrl: null, // Wird später durch MusicBrainz/Spotify API ersetzt
+    audioUrl: getRandomRockTrack(i),
   }));
 
   hideLoading();
-};
-
-/**
- * Gibt ein zufälliges Rock-Genre zurück
- * @function getRandomGenre
- * @returns {string} Genre-Name
- */
-const getRandomGenre = () => {
-  const genres = [
-    "Classic Rock",
-    "Hard Rock",
-    "Heavy Metal",
-    "Progressive Rock",
-    "Punk Rock",
-    "Grunge",
-    "Alternative",
-  ];
-  return genres[Math.floor(Math.random() * genres.length)];
-};
-
-/**
- * Rendert den Adventskalender
- * @function renderCalendar
- */
-const renderCalendar = () => {
-  const calendar = document.getElementById("adventCalendar");
-  calendar.innerHTML = "";
-
-  appState.bands.forEach((band) => {
-    const door = createDoor(band);
-    calendar.appendChild(door);
-  });
-};
-
-/**
- * Erstellt ein einzelnes Türchen
- * @function createDoor
- * @param {Object} band - Band-Daten
- * @returns {HTMLElement} Türchen-Element
- */
-const createDoor = (band) => {
-  const door = document.createElement("div");
-  door.className = getDoorClasses(band.day);
-  door.dataset.day = band.day;
-
-  const number = createDoorNumber(band.day);
-  door.appendChild(number);
-
-  if (isDoorUnlocked(band.day)) {
-    const content = createDoorContent(band);
-    door.appendChild(content);
-  }
-
-  return door;
-};
-
-/**
- * Erstellt CSS-Klassen für ein Türchen
- * @function getDoorClasses
- * @param {number} day - Tag des Türchens
- * @returns {string} CSS-Klassen
- */
-const getDoorClasses = (day) => {
-  let classes = "advent-calendar__door";
-
-  if (!isDoorUnlocked(day)) {
-    classes += " advent-calendar__door--locked";
-  } else {
-    classes += " advent-calendar__door--opened";
-  }
-
-  if (isToday(day)) {
-    classes += " advent-calendar__door--today";
-  }
-
-  return classes;
-};
-
-/**
- * Erstellt die Tagesnummer eines Türchens
- * @function createDoorNumber
- * @param {number} day - Tag des Türchens
- * @returns {HTMLElement} Nummern-Element
- */
-const createDoorNumber = (day) => {
-  const number = document.createElement("span");
-  number.className = "advent-calendar__number";
-  number.textContent = day;
-  return number;
-};
-
-/**
- * Erstellt den Inhalt eines Türchens
- * @function createDoorContent
- * @param {Object} band - Band-Daten
- * @returns {HTMLElement} Inhalts-Element
- */
-const createDoorContent = (band) => {
-  const content = document.createElement("div");
-  content.className = "advent-calendar__content";
-
-  if (band.coverUrl) {
-    const cover = createCoverImage(band);
-    content.appendChild(cover);
-  }
-
-  const bandName = document.createElement("div");
-  bandName.className = "advent-calendar__band-name";
-  bandName.textContent = band.name;
-
-  content.appendChild(bandName);
-  return content;
-};
-
-/**
- * Erstellt das Cover-Image für ein Türchen
- * @function createCoverImage
- * @param {Object} band - Band-Daten
- * @returns {HTMLElement} Image-Element
- */
-const createCoverImage = (band) => {
-  const cover = document.createElement("img");
-  cover.className = "advent-calendar__cover";
-  cover.src = band.coverUrl;
-  cover.alt = `${band.name} - ${band.album}`;
-  cover.loading = "lazy";
-  return cover;
-};
-
-/**
- * Prüft ob ein Türchen freigeschaltet ist
- * @function isDoorUnlocked
- * @param {number} day - Tag des Türchens
- * @returns {boolean} True wenn freigeschaltet
- */
-const isDoorUnlocked = (day) => {
-  if (appState.currentMonth !== 12) return false;
-  return day <= appState.currentDay;
-};
-
-/**
- * Prüft ob ein Tag der heutige ist
- * @function isToday
- * @param {number} day - Tag des Türchens
- * @returns {boolean} True wenn heute
- */
-const isToday = (day) => {
-  return day === appState.currentDay && appState.currentMonth === 12;
 };
 
 /**
@@ -393,10 +243,10 @@ const setupEventListeners = () => {
   calendar.addEventListener("click", handleDoorClick);
 
   const modalClose = document.getElementById("modalClose");
-  modalClose.addEventListener("click", closeModal);
+  modalClose.addEventListener("click", () => closeModal(appState));
 
   const backdrop = document.querySelector(".modal__backdrop");
-  backdrop.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", () => closeModal(appState));
 
   setupNavigationListeners();
 };
@@ -409,8 +259,12 @@ const setupNavigationListeners = () => {
   const prevBtn = document.getElementById("modalPrev");
   const nextBtn = document.getElementById("modalNext");
 
-  prevBtn.addEventListener("click", showPreviousDoor);
-  nextBtn.addEventListener("click", showNextDoor);
+  prevBtn.addEventListener("click", () =>
+    showPreviousDoor(appState.bands, appState)
+  );
+  nextBtn.addEventListener("click", () =>
+    showNextDoor(appState.bands, appState)
+  );
 };
 
 /**
@@ -423,103 +277,12 @@ const handleDoorClick = (event) => {
   if (!door) return;
 
   const day = parseInt(door.dataset.day);
-  if (!isDoorUnlocked(day)) return;
+  if (!isDoorUnlocked(day, appState)) return;
 
-  openModal(day);
+  openModal(day, appState.bands, appState);
 };
 
-/**
- * Öffnet das Modal für ein Türchen
- * @function openModal
- * @param {number} day - Tag des Türchens
- */
-const openModal = (day) => {
-  appState.selectedDoor = day;
-  const band = appState.bands.find((b) => b.day === day);
-
-  populateModal(band);
-  showModal();
-  updateNavigationButtons();
-};
-
-/**
- * Füllt Modal mit Band-Daten
- * @function populateModal
- * @param {Object} band - Band-Daten
- */
-const populateModal = (band) => {
-  document.getElementById("modalBandName").textContent = band.name;
-  document.getElementById("modalAlbumTitle").textContent = band.album;
-  document.getElementById("modalGenre").textContent = band.genre;
-  document.getElementById("modalYear").textContent = band.year;
-  document.getElementById("modalCountry").textContent = band.country;
-
-  const coverImg = document.getElementById("modalCover");
-  coverImg.src = band.coverUrl || "";
-  coverImg.alt = `${band.name} - ${band.album}`;
-
-  updateAudioPlayer(band);
-};
-
-/**
- * Zeigt das Modal an
- * @function showModal
- */
-const showModal = () => {
-  const modal = document.getElementById("modalOverlay");
-  modal.classList.add("modal--active");
-  document.body.style.overflow = "hidden";
-};
-
-/**
- * Schließt das Modal
- * @function closeModal
- */
-const closeModal = () => {
-  pauseAudio();
-  const modal = document.getElementById("modalOverlay");
-  modal.classList.remove("modal--active");
-  document.body.style.overflow = "";
-  appState.selectedDoor = null;
-};
-
-/**
- * Aktualisiert den Audio-Player mit Band-Musik
- * @function updateAudioPlayer
- * @param {Object} band - Band-Daten
- */
-const updateAudioPlayer = (band) => {
-  const audioPlayer = document.getElementById("modalAudioPlayer");
-  const audioSource = document.getElementById("modalAudioSource");
-  const audioContainer = document.getElementById("modalAudioContainer");
-
-  if (band.audioUrl) {
-    audioSource.src = band.audioUrl;
-    audioPlayer.load();
-    audioContainer.style.display = "block";
-  } else {
-    audioContainer.style.display = "none";
-  }
-};
-
-/**
- * Pausiert die Audio-Wiedergabe
- * @function pauseAudio
- */
-const pauseAudio = () => {
-  const audioPlayer = document.getElementById("modalAudioPlayer");
-  audioPlayer.pause();
-};
-
-/**
- * Zeigt vorheriges Türchen
- * @function showPreviousDoor
- */
-const showPreviousDoor = () => {
-  if (appState.selectedDoor > 1) {
-    openModal(appState.selectedDoor - 1);
-  }
-};
+document.addEventListener("DOMContentLoaded", initApp);
 
 /**
  * Zeigt nächstes Türchen
@@ -540,26 +303,58 @@ const updateNavigationButtons = () => {
   const nextBtn = document.getElementById("modalNext");
 
   prevBtn.disabled = appState.selectedDoor <= 1;
-  nextBtn.disabled = appState.selectedDoor >= 24;
+  hideLoading();
 };
 
 /**
- * Zeigt Loading-State
- * @function showLoading
+ * Richtet Event Listener ein
+ * @function setupEventListeners
  */
-const showLoading = () => {
-  const loading = document.getElementById("loadingState");
-  loading.classList.add("loading--active");
+const setupEventListeners = () => {
+  const calendar = document.getElementById("adventCalendar");
+  calendar.addEventListener("click", handleDoorClick);
+
+  const modalClose = document.getElementById("modalClose");
+  modalClose.addEventListener("click", () => closeModal(appState));
+
+  const backdrop = document.querySelector(".modal__backdrop");
+  backdrop.addEventListener("click", () => closeModal(appState));
+
+  setupNavigationListeners();
 };
 
 /**
- * Versteckt Loading-State
- * @function hideLoading
+ * Richtet Modal-Navigation ein
+ * @function setupNavigationListeners
  */
-const hideLoading = () => {
-  const loading = document.getElementById("loadingState");
-  loading.classList.remove("loading--active");
+const setupNavigationListeners = () => {
+  const prevBtn = document.getElementById("modalPrev");
+  const nextBtn = document.getElementById("modalNext");
+
+  prevBtn.addEventListener("click", () =>
+    showPreviousDoor(appState.bands, appState)
+  );
+  nextBtn.addEventListener("click", () =>
+    showNextDoor(appState.bands, appState)
+  );
 };
+
+/**
+ * Behandelt Klick auf Türchen
+ * @function handleDoorClick
+ * @param {Event} event - Click Event
+ */
+const handleDoorClick = (event) => {
+  const door = event.target.closest(".advent-calendar__door");
+  if (!door) return;
+
+  const day = parseInt(door.dataset.day);
+  if (!isDoorUnlocked(day, appState)) return;
+
+  openModal(day, appState.bands, appState);
+};
+
+document.addEventListener("DOMContentLoaded", initApp);
 
 // App starten
 document.addEventListener("DOMContentLoaded", initApp);
