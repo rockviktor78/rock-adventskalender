@@ -61,7 +61,7 @@ const loadBands = async () => {
       genre: "Nu Metal",
       country: "USA",
       audioFile: "assets/audio/Linkin Park - And One.mp3",
-      image: "assets/images/led-zeppelin.png",
+      image: "assets/images/Linkin Park - And One.png",
     },
     {
       name: "Metallica",
