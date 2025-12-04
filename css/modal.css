@@ -8,12 +8,14 @@
   width: 100%;
   height: 100%;
   z-index: 1000;
-  padding: 2rem 10%;
+  padding: 0;
   overflow-y: auto;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal--active {
-  display: block;
+  display: flex;
 }
 
 .modal__backdrop {
@@ -28,9 +30,10 @@
 
 .modal__container {
   position: relative;
-  max-width: 40rem;
-  max-height: 85vh;
-  margin: 0 auto;
+  max-width: 32rem;
+  width: 90%;
+  max-height: 70vh;
+  margin: auto;
   background: #2c2c2c;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -81,32 +84,33 @@
 .modal__content {
   padding: var(--spacing-md);
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .modal__player-wrapper {
   width: 100%;
-  height: 15rem;
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-md);
-  overflow: hidden;
-  background: #121212;
+  margin-top: var(--spacing-sm);
+  margin-bottom: 0;
+}
+
+.modal__image-wrapper {
+  margin-bottom: var(--spacing-sm);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 14rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (max-width: 48rem) {
   .modal__content {
     padding: var(--spacing-md);
-  }
-
-  .modal__player-wrapper {
-    height: 18.75rem;
-  }
-
-  .modal__band-name {
-    font-size: var(--font-size-xl);
   }
 
   .modal__album-title {
@@ -117,11 +121,6 @@
 @media (max-height: 47.5rem) {
   .modal__content {
     padding: var(--spacing-sm);
-  }
-
-  .modal__player-wrapper {
-    height: 12.5rem;
-    margin-bottom: var(--spacing-sm);
   }
 
   .modal__band-name {
@@ -158,11 +157,6 @@
     padding: var(--spacing-sm);
   }
 
-  .modal__player-wrapper {
-    height: 15rem;
-    margin-bottom: var(--spacing-md);
-  }
-
   .modal__band-name {
     font-size: var(--font-size-lg);
   }
@@ -191,11 +185,6 @@
     padding: 0.5rem;
     flex: 1;
     overflow-y: auto;
-  }
-
-  .modal__player-wrapper {
-    height: 10rem;
-    margin-bottom: 0.5rem;
   }
 
   .modal__band-name {
@@ -249,22 +238,30 @@
   }
 }
 
-.modal__spotify {
+/* Audio Player Styles */
+.modal__audio-player {
   width: 100%;
-  height: 100%;
+  height: 3.375rem;
+  background: var(--color-dark-gray);
   border-radius: var(--radius-md);
-  border: none;
+  outline: none;
 }
 
-.modal__image-wrapper {
-  margin-bottom: var(--spacing-md);
-  flex-shrink: 0;
+.modal__audio-player::-webkit-media-controls-panel {
+  background-color: var(--color-dark-gray);
+}
+
+.modal__audio-player::-webkit-media-controls-play-button,
+.modal__audio-player::-webkit-media-controls-current-time-display,
+.modal__audio-player::-webkit-media-controls-time-remaining-display {
+  color: var(--color-white);
 }
 
 .modal__cover {
   width: 100%;
-  max-width: 18rem;
-  height: auto;
+  max-width: 14rem;
+  height: 14rem;
+  object-fit: cover;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   display: block;
@@ -273,20 +270,24 @@
 
 .modal__details {
   margin-top: var(--spacing-sm);
-  flex-shrink: 0;
+  flex: 0 0 auto;
+  min-height: auto;
 }
 
 .modal__band-name {
   font-family: var(--font-display);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   margin-bottom: var(--spacing-xs);
   color: var(--color-today);
+  min-height: 1.5rem;
 }
 
 .modal__album-title {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-md);
   margin-bottom: var(--spacing-sm);
   color: var(--color-text-muted);
+  min-height: 1.5rem;
+  line-height: 1.4;
 }
 
 .modal__info {

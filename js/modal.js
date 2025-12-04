@@ -27,12 +27,16 @@ export const openModal = (day, bands, state) => {
  */
 const populateModal = (band) => {
   document.getElementById("modalBandName").textContent = band.name;
-  document.getElementById("modalAlbumTitle").textContent = band.album;
+  document.getElementById("modalBandName").textContent = band.name;
+  const albumText = band.song ? `${band.album} - ${band.song}` : band.album;
+  document.getElementById("modalAlbumTitle").textContent = albumText;
   document.getElementById("modalGenre").textContent = band.genre;
   document.getElementById("modalYear").textContent = band.year;
   document.getElementById("modalCountry").textContent = band.country;
   document.getElementById("modalCover").src = band.image;
-  document.getElementById("modalCover").alt = `${band.name} - ${band.album}`;
+  document.getElementById("modalCover").alt = `${band.name} - ${
+    band.song || band.album
+  }`;
 
   updateSpotifyPlayer(band);
 };
@@ -61,39 +65,33 @@ export const closeModal = (state) => {
 };
 
 /**
- * Updates the Spotify player
+ * Updates the audio player
  * @function updateSpotifyPlayer
  * @param {Object} band - Band data
  */
 const updateSpotifyPlayer = (band) => {
-  const spotifyPlayer = document.getElementById("modalSpotify");
+  const audioPlayer = document.getElementById("modalAudioPlayer");
+  const audioSource = document.getElementById("modalAudioSource");
   const playerWrapper = document.getElementById("modalPlayerWrapper");
 
-  if (band.spotifyUri) {
-    const embedUrl = `https://open.spotify.com/embed/${band.spotifyUri}?utm_source=generator&theme=0`;
-    spotifyPlayer.src = embedUrl;
-    spotifyPlayer.setAttribute(
-      "allow",
-      "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    );
+  if (band.audioFile) {
+    audioSource.src = band.audioFile;
+    audioPlayer.load();
+    audioPlayer.play().catch((e) => console.log("Autoplay blocked:", e));
     playerWrapper.style.display = "block";
-
-    playerWrapper.addEventListener("click", (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-    });
   } else {
     playerWrapper.style.display = "none";
   }
 };
 
 /**
- * Stops the Spotify player
+ * Stops the audio player
  * @function stopSpotifyPlayer
  */
 const stopSpotifyPlayer = () => {
-  const spotifyPlayer = document.getElementById("modalSpotify");
-  spotifyPlayer.src = "";
+  const audioPlayer = document.getElementById("modalAudioPlayer");
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
 };
 
 /**

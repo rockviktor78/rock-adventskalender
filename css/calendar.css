@@ -25,9 +25,59 @@
 }
 
 .advent-calendar__door--locked {
-  background: var(--color-locked);
-  cursor: not-allowed;
-  opacity: 0.6;
+  cursor: pointer;
+  position: relative;
+}
+
+.advent-calendar__door--locked::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 2;
+  transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+.advent-calendar__door--locked .advent-calendar__content {
+  filter: grayscale(80%) opacity(0.6);
+  transition: filter 0.5s ease;
+}
+
+.advent-calendar__door--locked .advent-calendar__number {
+  color: #bbb;
+  z-index: 3;
+}
+
+.advent-calendar__door--locked::before {
+  content: "🔒";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  opacity: 0.7;
+  z-index: 3;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Preview state - door temporarily unlocks */
+.advent-calendar__door--previewing::after {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+}
+
+.advent-calendar__door--previewing .advent-calendar__content {
+  filter: grayscale(0%) opacity(1);
+}
+
+.advent-calendar__door--previewing::before {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
 }
 
 .advent-calendar__door--opened {

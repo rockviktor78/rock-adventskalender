@@ -42,9 +42,15 @@ const createDoor = (band, state) => {
   const number = createDoorNumber(band.day);
   door.appendChild(number);
 
-  if (isDoorUnlocked(band.day, state)) {
-    const content = createDoorContent(band);
-    door.appendChild(content);
+  const content = createDoorContent(band);
+  door.appendChild(content);
+
+  // Add preview for locked doors
+  if (!isDoorUnlocked(band.day, state)) {
+    door.addEventListener("click", (e) => {
+      e.stopPropagation();
+      showLockedDoorPreview(door, band);
+    });
   }
 
   return door;
@@ -186,4 +192,32 @@ export const isDoorUnlocked = (day, state) => {
  */
 const isToday = (day, state) => {
   return day === state.currentDay && state.currentMonth === 12;
+};
+
+/**
+ * Shows a preview of locked door
+ * @function showLockedDoorPreview
+ * @param {HTMLElement} door - Door element
+ * @param {Object} band - Band data
+ */
+const showLockedDoorPreview = (door, band) => {
+  if (door.classList.contains("advent-calendar__door--previewing")) return;
+
+  door.classList.add("advent-calendar__door--previewing");
+
+  // Create and play audio
+  let audio = null;
+  if (band.audioFile) {
+    audio = new Audio(band.audioFile);
+    audio.volume = 0.7;
+    audio.play().catch((e) => console.log("Audio preview blocked:", e));
+  }
+
+  setTimeout(() => {
+    door.classList.remove("advent-calendar__door--previewing");
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }, 5000);
 };
