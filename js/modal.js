@@ -1,14 +1,14 @@
 /**
- * @fileoverview Modal Module - Detailansicht Funktionen
- * @description Modal öffnen, schließen und befüllen
+ * @fileoverview Modal Module - Detail View Functions
+ * @description Open, close and populate modal
  * @module modal
  */
 
 /**
- * Öffnet das Modal für ein Türchen
+ * Opens the modal for a door
  * @function openModal
- * @param {number} day - Tag des Türchens
- * @param {Array} bands - Band-Daten Array
+ * @param {number} day - Day of the door
+ * @param {Array} bands - Band data array
  * @param {Object} state - App State
  */
 export const openModal = (day, bands, state) => {
@@ -21,9 +21,9 @@ export const openModal = (day, bands, state) => {
 };
 
 /**
- * Füllt Modal mit Band-Daten
+ * Populates modal with band data
  * @function populateModal
- * @param {Object} band - Band-Daten
+ * @param {Object} band - Band data
  */
 const populateModal = (band) => {
   document.getElementById("modalBandName").textContent = band.name;
@@ -31,12 +31,14 @@ const populateModal = (band) => {
   document.getElementById("modalGenre").textContent = band.genre;
   document.getElementById("modalYear").textContent = band.year;
   document.getElementById("modalCountry").textContent = band.country;
+  document.getElementById("modalCover").src = band.image;
+  document.getElementById("modalCover").alt = `${band.name} - ${band.album}`;
 
   updateSpotifyPlayer(band);
 };
 
 /**
- * Zeigt das Modal an
+ * Shows the modal
  * @function showModal
  */
 const showModal = () => {
@@ -46,7 +48,7 @@ const showModal = () => {
 };
 
 /**
- * Schließt das Modal
+ * Closes the modal
  * @function closeModal
  * @param {Object} state - App State
  */
@@ -59,9 +61,9 @@ export const closeModal = (state) => {
 };
 
 /**
- * Aktualisiert den Spotify-Player
+ * Updates the Spotify player
  * @function updateSpotifyPlayer
- * @param {Object} band - Band-Daten
+ * @param {Object} band - Band data
  */
 const updateSpotifyPlayer = (band) => {
   const spotifyPlayer = document.getElementById("modalSpotify");
@@ -75,13 +77,18 @@ const updateSpotifyPlayer = (band) => {
       "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
     );
     playerWrapper.style.display = "block";
+
+    playerWrapper.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+    });
   } else {
     playerWrapper.style.display = "none";
   }
 };
 
 /**
- * Stoppt den Spotify-Player
+ * Stops the Spotify player
  * @function stopSpotifyPlayer
  */
 const stopSpotifyPlayer = () => {
@@ -90,9 +97,9 @@ const stopSpotifyPlayer = () => {
 };
 
 /**
- * Zeigt vorheriges Türchen
+ * Shows previous door
  * @function showPreviousDoor
- * @param {Array} bands - Band-Daten
+ * @param {Array} bands - Band data
  * @param {Object} state - App State
  */
 export const showPreviousDoor = (bands, state) => {
@@ -102,9 +109,9 @@ export const showPreviousDoor = (bands, state) => {
 };
 
 /**
- * Zeigt nächstes Türchen
+ * Shows next door
  * @function showNextDoor
- * @param {Array} bands - Band-Daten
+ * @param {Array} bands - Band data
  * @param {Object} state - App State
  */
 export const showNextDoor = (bands, state) => {
@@ -114,7 +121,7 @@ export const showNextDoor = (bands, state) => {
 };
 
 /**
- * Aktualisiert Navigation-Buttons
+ * Updates navigation buttons
  * @function updateNavigationButtons
  * @param {Object} state - App State
  */

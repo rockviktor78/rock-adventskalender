@@ -1,6 +1,6 @@
 /**
- * @fileoverview Rock Adventskalender - Hauptdatei
- * @description Entry Point für die Rock-Adventskalender SPA
+ * @fileoverview Rock Advent Calendar - Main File
+ * @description Entry point for the Rock Advent Calendar SPA
  * @module script
  */
 
@@ -18,7 +18,7 @@ import {
 } from "./js/ui-helpers.js";
 
 /**
- * App State für den Adventskalender
+ * App State for the Advent Calendar
  */
 const appState = {
   currentDay: new Date().getDate(),
@@ -28,30 +28,30 @@ const appState = {
 };
 
 /**
- * Initialisiert die Anwendung
+ * Initializes the application
  * @async
  * @function initApp
  */
 const initApp = async () => {
-  console.log("🎸 Rock Adventskalender wird initialisiert...");
+  console.log("🎸 Rock Advent Calendar initializing...");
   displayCurrentDate();
   await loadBands();
-  console.log("✅ Bands geladen:", appState.bands.length);
+  console.log("✅ Bands loaded:", appState.bands.length);
   renderCalendar(appState.bands, appState);
-  console.log("✅ Kalender gerendert");
+  console.log("✅ Calendar rendered");
   setupEventListeners();
-  console.log("✅ Event Listeners eingerichtet");
+  console.log("✅ Event listeners set up");
 };
 
 /**
- * Lädt Band-Daten (aktuell Platzhalter)
+ * Loads band data (currently placeholder)
  * @async
  * @function loadBands
  */
 const loadBands = async () => {
   showLoading();
 
-  // Temporäre Platzhalter-Daten mit bekannten Rock-Bands
+  // Temporary placeholder data with well-known rock bands
   const rockBands = [
     {
       name: "Led Zeppelin",
@@ -60,6 +60,7 @@ const loadBands = async () => {
       genre: "Hard Rock",
       country: "England",
       spotifyUri: "album/44Ig8dzqOkvkGDzaUof9lK",
+      image: "assets/images/led-zeppelin.png",
     },
     {
       name: "AC/DC",
@@ -68,6 +69,7 @@ const loadBands = async () => {
       genre: "Hard Rock",
       country: "Australien",
       spotifyUri: "album/6mUdeDZCsExyJLMdAfDuwh",
+      image: "assets/images/acdc.png",
     },
     {
       name: "Queen",
@@ -76,6 +78,7 @@ const loadBands = async () => {
       genre: "Classic Rock",
       country: "England",
       spotifyUri: "album/6wCttLq0ADzkPgtRnUihLV",
+      image: "assets/images/queen.png",
     },
     {
       name: "Pink Floyd",
@@ -84,6 +87,7 @@ const loadBands = async () => {
       genre: "Progressive Rock",
       country: "England",
       spotifyUri: "album/4LH4d3cOWNNsVw41Gqt2kv",
+      image: "assets/images/pinkfloyd.png",
     },
     {
       name: "The Rolling Stones",
@@ -92,6 +96,7 @@ const loadBands = async () => {
       genre: "Classic Rock",
       country: "England",
       spotifyUri: "album/6FlikEnTkScZAb0gTo1Sdy",
+      image: "assets/images/therollingstones .png",
     },
     {
       name: "Deep Purple",
@@ -100,6 +105,7 @@ const loadBands = async () => {
       genre: "Hard Rock",
       country: "England",
       spotifyUri: "album/6r7LZXAVueS5DqdrvXJJK7",
+      image: "assets/images/deeppurple.png",
     },
     {
       name: "Black Sabbath",
@@ -108,6 +114,7 @@ const loadBands = async () => {
       genre: "Heavy Metal",
       country: "England",
       spotifyUri: "album/6r7qPznMANAeOfOvRGz8x9",
+      image: "assets/images/blacksabbath.png",
     },
     {
       name: "Metallica",
@@ -116,6 +123,7 @@ const loadBands = async () => {
       genre: "Heavy Metal",
       country: "USA",
       spotifyUri: "album/2Wlknovobhr91RD8V7r77n",
+      image: "assets/images/metallica.png",
     },
     {
       name: "Nirvana",
@@ -124,6 +132,7 @@ const loadBands = async () => {
       genre: "Grunge",
       country: "USA",
       spotifyUri: "album/2guirTSEqLizK7j9i1MTTZ",
+      image: "assets/images/nirvana.png",
     },
     {
       name: "The Beatles",
@@ -132,6 +141,7 @@ const loadBands = async () => {
       genre: "Classic Rock",
       country: "England",
       spotifyUri: "album/0ETFjACtuP2ADo6LFhL6HN",
+      image: "assets/images/thebeatles.png",
     },
     {
       name: "The Who",
@@ -140,6 +150,7 @@ const loadBands = async () => {
       genre: "Classic Rock",
       country: "England",
       spotifyUri: "album/6y2NScXWzx8zUotiAVrkwb",
+      image: "assets/images/thewho.png",
     },
     {
       name: "Iron Maiden",
@@ -148,6 +159,7 @@ const loadBands = async () => {
       genre: "Heavy Metal",
       country: "England",
       spotifyUri: "album/7MZKdJXwklkIXXy9eqJBCc",
+      image: "assets/images/ironmaiden.png",
     },
     {
       name: "Guns N' Roses",
@@ -156,6 +168,7 @@ const loadBands = async () => {
       genre: "Hard Rock",
       country: "USA",
       spotifyUri: "album/28yHV3Gdpj0iTcyJPm0Hyc",
+      image: "assets/images/Guns N'Roses.png",
     },
     {
       name: "Aerosmith",
@@ -164,6 +177,7 @@ const loadBands = async () => {
       genre: "Hard Rock",
       country: "USA",
       spotifyUri: "album/3S0WkhKMDcLTPVsCUPdAu2",
+      image: "assets/images/Aerosmith.png",
     },
     {
       name: "The Doors",
@@ -172,6 +186,7 @@ const loadBands = async () => {
       genre: "Classic Rock",
       country: "USA",
       spotifyUri: "album/2XXWbdqDbpL56W2168GPUH",
+      image: "assets/images/TheDoors.png",
     },
     {
       name: "Jimi Hendrix",
@@ -180,6 +195,7 @@ const loadBands = async () => {
       genre: "Classic Rock",
       country: "USA",
       spotifyUri: "album/5gzXCdfOJu1jK3K1K5qFcD",
+      image: "assets/images/JimiHendrix.png",
     },
     {
       name: "Van Halen",
@@ -188,6 +204,7 @@ const loadBands = async () => {
       genre: "Hard Rock",
       country: "USA",
       spotifyUri: "album/6HzITiHNcQGJAlAbnIgZtY",
+      image: "assets/images/VanHalen.png",
     },
     {
       name: "Ramones",
@@ -196,6 +213,7 @@ const loadBands = async () => {
       genre: "Punk Rock",
       country: "USA",
       spotifyUri: "album/2EHtFiX6sNfJktIFo3M1cj",
+      image: "assets/images/ramones.png",
     },
     {
       name: "Sex Pistols",
@@ -204,6 +222,7 @@ const loadBands = async () => {
       genre: "Punk Rock",
       country: "England",
       spotifyUri: "album/1SIBEVambCmwAJESlbz3ja",
+      image: "assets/images/SexPistols.png",
     },
     {
       name: "Scorpions",
@@ -212,6 +231,7 @@ const loadBands = async () => {
       genre: "Hard Rock",
       country: "Deutschland",
       spotifyUri: "album/4bMhR2YjPFdODwqXaZqCMW",
+      image: "assets/images/Scorpions.png",
     },
     {
       name: "U2",
@@ -220,6 +240,7 @@ const loadBands = async () => {
       genre: "Alternative",
       country: "Irland",
       spotifyUri: "album/1WLWXr0OhRU2uFGZKLhZZx",
+      image: "assets/images/u2.png",
     },
     {
       name: "Radiohead",
@@ -228,6 +249,7 @@ const loadBands = async () => {
       genre: "Alternative",
       country: "England",
       spotifyUri: "album/6dVIqQ8qmQ5GBnJ9shOYGE",
+      image: "assets/images/Radiohead.png",
     },
     {
       name: "Pearl Jam",
@@ -236,6 +258,7 @@ const loadBands = async () => {
       genre: "Grunge",
       country: "USA",
       spotifyUri: "album/1hBHmRUJWAjTzDKojUW0He",
+      image: "assets/images/PearlJam.png",
     },
     {
       name: "Foo Fighters",
@@ -244,6 +267,7 @@ const loadBands = async () => {
       genre: "Alternative",
       country: "USA",
       spotifyUri: "album/30ly6F6Xl0TKmyY5Yf0TGL",
+      image: "assets/images/FooFighters.png",
     },
   ];
 
@@ -254,7 +278,8 @@ const loadBands = async () => {
     genre: band.genre,
     year: band.year,
     country: band.country,
-    coverUrl: `https://i.scdn.co/image/${band.spotifyUri.split("/")[1]}`,
+    image: band.image,
+    coverUrl: band.image,
     spotifyUri: band.spotifyUri,
   }));
 
@@ -262,7 +287,7 @@ const loadBands = async () => {
 };
 
 /**
- * Richtet Event Listener ein
+ * Sets up event listeners
  * @function setupEventListeners
  */
 const setupEventListeners = () => {
@@ -279,7 +304,7 @@ const setupEventListeners = () => {
 };
 
 /**
- * Richtet Modal-Navigation ein
+ * Sets up modal navigation
  * @function setupNavigationListeners
  */
 const setupNavigationListeners = () => {
@@ -295,9 +320,9 @@ const setupNavigationListeners = () => {
 };
 
 /**
- * Behandelt Klick auf Türchen
+ * Handles clicks on doors
  * @function handleDoorClick
- * @param {Event} event - Click Event
+ * @param {Event} e - Click event
  */
 const handleDoorClick = (event) => {
   if (event.target.closest(".advent-calendar__player-wrapper")) {

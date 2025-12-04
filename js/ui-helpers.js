@@ -1,11 +1,11 @@
 /**
  * @fileoverview UI Helpers - Loading & Error States
- * @description Hilfsfunktionen für UI-Zustände
+ * @description Helper functions for UI states
  * @module ui-helpers
  */
 
 /**
- * Zeigt das aktuelle Datum im Header an
+ * Displays the current date in the header
  * @function displayCurrentDate
  */
 export const displayCurrentDate = () => {
@@ -21,7 +21,7 @@ export const displayCurrentDate = () => {
 };
 
 /**
- * Zeigt Loading-State
+ * Shows loading state
  * @function showLoading
  */
 export const showLoading = () => {
@@ -30,7 +30,7 @@ export const showLoading = () => {
 };
 
 /**
- * Versteckt Loading-State
+ * Hides loading state
  * @function hideLoading
  */
 export const hideLoading = () => {
@@ -39,9 +39,9 @@ export const hideLoading = () => {
 };
 
 /**
- * Zeigt Error-State
+ * Shows error state
  * @function showError
- * @param {string} message - Fehlermeldung
+ * @param {string} message - Error message
  */
 export const showError = (message) => {
   const error = document.getElementById("errorState");
@@ -51,7 +51,7 @@ export const showError = (message) => {
 };
 
 /**
- * Versteckt Error-State
+ * Hides error state
  * @function hideError
  */
 export const hideError = () => {

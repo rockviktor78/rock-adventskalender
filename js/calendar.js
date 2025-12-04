@@ -1,13 +1,13 @@
 /**
- * @fileoverview Calendar Module - Adventskalender Rendering
- * @description Kalender-Türchen erstellen und darstellen
+ * @fileoverview Calendar Module - Advent Calendar Rendering
+ * @description Create and display calendar doors
  * @module calendar
  */
 
 /**
- * Rendert den Adventskalender
+ * Renders the advent calendar
  * @function renderCalendar
- * @param {Array} bands - Array von Band-Daten
+ * @param {Array} bands - Array of band data
  * @param {Object} state - App State
  */
 export const renderCalendar = (bands, state) => {
@@ -17,22 +17,22 @@ export const renderCalendar = (bands, state) => {
     return;
   }
   calendar.innerHTML = "";
-  console.log("🎄 Rendering", bands.length, "Türchen...");
+  console.log("🎄 Rendering", bands.length, "doors...");
 
   bands.forEach((band) => {
     const door = createDoor(band, state);
     calendar.appendChild(door);
   });
 
-  console.log("✅ Kalender gerendert mit", calendar.children.length, "Türchen");
+  console.log("✅ Calendar rendered with", calendar.children.length, "doors");
 };
 
 /**
- * Erstellt ein einzelnes Türchen
+ * Creates a single door
  * @function createDoor
- * @param {Object} band - Band-Daten
+ * @param {Object} band - Band data
  * @param {Object} state - App State
- * @returns {HTMLElement} Türchen-Element
+ * @returns {HTMLElement} Door element
  */
 const createDoor = (band, state) => {
   const door = document.createElement("div");
@@ -51,11 +51,11 @@ const createDoor = (band, state) => {
 };
 
 /**
- * Erstellt CSS-Klassen für ein Türchen
+ * Creates CSS classes for a door
  * @function getDoorClasses
- * @param {number} day - Tag des Türchens
+ * @param {number} day - Day of the door
  * @param {Object} state - App State
- * @returns {string} CSS-Klassen
+ * @returns {string} CSS classes
  */
 const getDoorClasses = (day, state) => {
   let classes = "advent-calendar__door";
@@ -74,10 +74,10 @@ const getDoorClasses = (day, state) => {
 };
 
 /**
- * Erstellt die Tagesnummer eines Türchens
+ * Creates the day number of a door
  * @function createDoorNumber
- * @param {number} day - Tag des Türchens
- * @returns {HTMLElement} Nummern-Element
+ * @param {number} day - Day of the door
+ * @returns {HTMLElement} Number element
  */
 const createDoorNumber = (day) => {
   const number = document.createElement("span");
@@ -87,18 +87,21 @@ const createDoorNumber = (day) => {
 };
 
 /**
- * Erstellt den Inhalt eines Türchens
+ * Creates the content of a door
  * @function createDoorContent
- * @param {Object} band - Band-Daten
- * @returns {HTMLElement} Inhalts-Element
+ * @param {Object} band - Band data
+ * @returns {HTMLElement} Content element
  */
 const createDoorContent = (band) => {
   const content = document.createElement("div");
   content.className = "advent-calendar__content";
 
-  if (band.spotifyUri) {
-    const playerWrapper = createSpotifyEmbed(band);
-    content.appendChild(playerWrapper);
+  if (band.image) {
+    console.log("🖼️ Loading image for", band.name, ":", band.image);
+    const bandImage = createBandImage(band);
+    content.appendChild(bandImage);
+  } else {
+    console.warn("⚠️ No image for", band.name);
   }
 
   const bandName = document.createElement("div");
@@ -110,10 +113,10 @@ const createDoorContent = (band) => {
 };
 
 /**
- * Erstellt Spotify-Embed für Türchen
+ * Creates Spotify embed for door
  * @function createSpotifyEmbed
- * @param {Object} band - Band-Daten
- * @returns {HTMLElement} Player-Wrapper Element
+ * @param {Object} band - Band data
+ * @returns {HTMLElement} Player wrapper element
  */
 const createSpotifyEmbed = (band) => {
   const wrapper = document.createElement("div");
@@ -139,11 +142,35 @@ const createSpotifyEmbed = (band) => {
 };
 
 /**
- * Prüft ob ein Türchen freigeschaltet ist
+ * Creates band image for door
+ * @function createBandImage
+ * @param {Object} band - Band data
+ * @returns {HTMLElement} Image element
+ */
+const createBandImage = (band) => {
+  const img = document.createElement("img");
+  img.className = "advent-calendar__image";
+  img.src = band.image;
+  img.alt = `${band.name} - ${band.album}`;
+  img.loading = "lazy";
+
+  img.addEventListener("load", () => {
+    console.log("✅ Image loaded:", band.name);
+  });
+
+  img.addEventListener("error", (e) => {
+    console.error("❌ Error loading:", band.image, e);
+  });
+
+  return img;
+};
+
+/**
+ * Checks if a door is unlocked
  * @function isDoorUnlocked
- * @param {number} day - Tag des Türchens
+ * @param {number} day - Day of the door
  * @param {Object} state - App State
- * @returns {boolean} True wenn freigeschaltet
+ * @returns {boolean} True if unlocked
  */
 export const isDoorUnlocked = (day, state) => {
   if (state.currentMonth !== 12) return false;
@@ -151,11 +178,11 @@ export const isDoorUnlocked = (day, state) => {
 };
 
 /**
- * Prüft ob ein Tag der heutige ist
+ * Checks if a day is today
  * @function isToday
- * @param {number} day - Tag des Türchens
+ * @param {number} day - Day of the door
  * @param {Object} state - App State
- * @returns {boolean} True wenn heute
+ * @returns {boolean} True if today
  */
 const isToday = (day, state) => {
   return day === state.currentDay && state.currentMonth === 12;
