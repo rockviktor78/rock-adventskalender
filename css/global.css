@@ -142,3 +142,44 @@ body {
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
+
+/* ===== Scroll to Top Button ===== */
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: var(--color-today);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 999;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 0.5rem 1.5rem rgba(230, 57, 70, 0.5);
+}
+
+.scroll-to-top--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 48rem) {
+  .scroll-to-top {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+  }
+}

@@ -101,7 +101,7 @@ const loadBands = async () => {
       genre: "Alternative Rock",
       country: "Kanada",
       audioFile: "assets/audio/Nickelback - Yanking Out My Heart.mp3",
-      image: "assets/images/therollingstones .png",
+      image: "assets/images/therollingstones.png",
     },
     {
       name: "Nightwish",
@@ -181,7 +181,7 @@ const loadBands = async () => {
       genre: "Neue Deutsche Härte",
       country: "Deutschland",
       audioFile: "assets/audio/Rammstein - Du Hast.mp3",
-      image: "assets/images/Guns N'Roses.png",
+      image: "assets/images/GunsNRoses.png",
     },
     {
       name: "Rammstein",
@@ -326,6 +326,7 @@ const setupEventListeners = () => {
   backdrop.addEventListener("click", () => closeModal(appState));
 
   setupNavigationListeners();
+  setupScrollToTop();
 };
 
 /**
@@ -364,6 +365,29 @@ const handleDoorClick = (event) => {
   event.stopPropagation();
 
   openModal(day, appState.bands, appState);
+};
+
+/**
+ * Sets up scroll to top button
+ * @function setupScrollToTop
+ */
+const setupScrollToTop = () => {
+  const scrollBtn = document.getElementById("scrollToTop");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 100) {
+      scrollBtn.classList.add("scroll-to-top--visible");
+    } else {
+      scrollBtn.classList.remove("scroll-to-top--visible");
+    }
+  });
+
+  scrollBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 };
 
 document.addEventListener("DOMContentLoaded", initApp);
