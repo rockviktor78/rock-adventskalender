@@ -12,12 +12,19 @@
  */
 export const renderCalendar = (bands, state) => {
   const calendar = document.getElementById("adventCalendar");
+  if (!calendar) {
+    console.error("❌ Calendar element not found!");
+    return;
+  }
   calendar.innerHTML = "";
+  console.log("🎄 Rendering", bands.length, "Türchen...");
 
   bands.forEach((band) => {
     const door = createDoor(band, state);
     calendar.appendChild(door);
   });
+
+  console.log("✅ Kalender gerendert mit", calendar.children.length, "Türchen");
 };
 
 /**
@@ -89,9 +96,9 @@ const createDoorContent = (band) => {
   const content = document.createElement("div");
   content.className = "advent-calendar__content";
 
-  if (band.coverUrl) {
-    const cover = createCoverImage(band);
-    content.appendChild(cover);
+  if (band.spotifyUri) {
+    const playerWrapper = createSpotifyEmbed(band);
+    content.appendChild(playerWrapper);
   }
 
   const bandName = document.createElement("div");
@@ -103,18 +110,32 @@ const createDoorContent = (band) => {
 };
 
 /**
- * Erstellt das Cover-Image für ein Türchen
- * @function createCoverImage
+ * Erstellt Spotify-Embed für Türchen
+ * @function createSpotifyEmbed
  * @param {Object} band - Band-Daten
- * @returns {HTMLElement} Image-Element
+ * @returns {HTMLElement} Player-Wrapper Element
  */
-const createCoverImage = (band) => {
-  const cover = document.createElement("img");
-  cover.className = "advent-calendar__cover";
-  cover.src = band.coverUrl;
-  cover.alt = `${band.name} - ${band.album}`;
-  cover.loading = "lazy";
-  return cover;
+const createSpotifyEmbed = (band) => {
+  const wrapper = document.createElement("div");
+  wrapper.className = "advent-calendar__player-wrapper";
+
+  wrapper.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  const iframe = document.createElement("iframe");
+  iframe.className = "advent-calendar__player";
+  iframe.src = `https://open.spotify.com/embed/${band.spotifyUri}?utm_source=generator&theme=0`;
+  iframe.setAttribute("frameborder", "0");
+  iframe.setAttribute(
+    "allow",
+    "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+  );
+  iframe.setAttribute("allowfullscreen", "");
+  iframe.setAttribute("loading", "lazy");
+
+  wrapper.appendChild(iframe);
+  return wrapper;
 };
 
 /**

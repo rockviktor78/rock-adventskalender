@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,10 @@
       content="Rock Adventskalender 2025 - Entdecke jeden Tag eine legendäre Rock-Band"
     />
     <title>Rock Adventskalender 2025</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -47,8 +51,14 @@
         </button>
 
         <div class="modal__content" id="modalContent">
-          <div class="modal__image-wrapper">
-            <img class="modal__cover" id="modalCover" alt="Album Cover" />
+          <div class="modal__player-wrapper" id="modalPlayerWrapper">
+            <iframe
+              class="modal__spotify"
+              id="modalSpotify"
+              frameborder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              allowfullscreen
+            ></iframe>
           </div>
 
           <div class="modal__details">
@@ -71,13 +81,6 @@
             </div>
 
             <div class="modal__bio" id="modalBio"></div>
-
-            <div class="modal__audio" id="modalAudioContainer">
-              <audio class="modal__audio-player" id="modalAudioPlayer" controls>
-                <source id="modalAudioSource" type="audio/mpeg" />
-                Dein Browser unterstützt kein Audio.
-              </audio>
-            </div>
           </div>
         </div>
 

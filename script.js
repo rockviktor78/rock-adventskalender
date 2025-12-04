@@ -4,7 +4,6 @@
  * @module script
  */
 
-import { getRandomRockTrack } from "./js/music-api.js";
 import { renderCalendar, isDoorUnlocked } from "./js/calendar.js";
 import {
   openModal,
@@ -22,8 +21,8 @@ import {
  * App State für den Adventskalender
  */
 const appState = {
-  currentDay: 24, // Testweise auf 24 gesetzt um alle Türchen zu sehen
-  currentMonth: 12,
+  currentDay: new Date().getDate(),
+  currentMonth: new Date().getMonth() + 1,
   selectedDoor: null,
   bands: [],
 };
@@ -34,10 +33,14 @@ const appState = {
  * @function initApp
  */
 const initApp = async () => {
+  console.log("🎸 Rock Adventskalender wird initialisiert...");
   displayCurrentDate();
   await loadBands();
+  console.log("✅ Bands geladen:", appState.bands.length);
   renderCalendar(appState.bands, appState);
+  console.log("✅ Kalender gerendert");
   setupEventListeners();
+  console.log("✅ Event Listeners eingerichtet");
 };
 
 /**
@@ -56,6 +59,7 @@ const loadBands = async () => {
       year: 1971,
       genre: "Hard Rock",
       country: "England",
+      spotifyUri: "album/44Ig8dzqOkvkGDzaUof9lK",
     },
     {
       name: "AC/DC",
@@ -63,6 +67,7 @@ const loadBands = async () => {
       year: 1980,
       genre: "Hard Rock",
       country: "Australien",
+      spotifyUri: "album/6mUdeDZCsExyJLMdAfDuwh",
     },
     {
       name: "Queen",
@@ -70,6 +75,7 @@ const loadBands = async () => {
       year: 1975,
       genre: "Classic Rock",
       country: "England",
+      spotifyUri: "album/6wCttLq0ADzkPgtRnUihLV",
     },
     {
       name: "Pink Floyd",
@@ -77,6 +83,7 @@ const loadBands = async () => {
       year: 1973,
       genre: "Progressive Rock",
       country: "England",
+      spotifyUri: "album/4LH4d3cOWNNsVw41Gqt2kv",
     },
     {
       name: "The Rolling Stones",
@@ -84,6 +91,7 @@ const loadBands = async () => {
       year: 1972,
       genre: "Classic Rock",
       country: "England",
+      spotifyUri: "album/6FlikEnTkScZAb0gTo1Sdy",
     },
     {
       name: "Deep Purple",
@@ -91,6 +99,7 @@ const loadBands = async () => {
       year: 1972,
       genre: "Hard Rock",
       country: "England",
+      spotifyUri: "album/6r7LZXAVueS5DqdrvXJJK7",
     },
     {
       name: "Black Sabbath",
@@ -98,6 +107,7 @@ const loadBands = async () => {
       year: 1970,
       genre: "Heavy Metal",
       country: "England",
+      spotifyUri: "album/6r7qPznMANAeOfOvRGz8x9",
     },
     {
       name: "Metallica",
@@ -105,6 +115,7 @@ const loadBands = async () => {
       year: 1986,
       genre: "Heavy Metal",
       country: "USA",
+      spotifyUri: "album/2Wlknovobhr91RD8V7r77n",
     },
     {
       name: "Nirvana",
@@ -112,6 +123,7 @@ const loadBands = async () => {
       year: 1991,
       genre: "Grunge",
       country: "USA",
+      spotifyUri: "album/2guirTSEqLizK7j9i1MTTZ",
     },
     {
       name: "The Beatles",
@@ -119,6 +131,7 @@ const loadBands = async () => {
       year: 1969,
       genre: "Classic Rock",
       country: "England",
+      spotifyUri: "album/0ETFjACtuP2ADo6LFhL6HN",
     },
     {
       name: "The Who",
@@ -126,6 +139,7 @@ const loadBands = async () => {
       year: 1971,
       genre: "Classic Rock",
       country: "England",
+      spotifyUri: "album/6y2NScXWzx8zUotiAVrkwb",
     },
     {
       name: "Iron Maiden",
@@ -133,6 +147,7 @@ const loadBands = async () => {
       year: 1982,
       genre: "Heavy Metal",
       country: "England",
+      spotifyUri: "album/7MZKdJXwklkIXXy9eqJBCc",
     },
     {
       name: "Guns N' Roses",
@@ -140,6 +155,7 @@ const loadBands = async () => {
       year: 1987,
       genre: "Hard Rock",
       country: "USA",
+      spotifyUri: "album/28yHV3Gdpj0iTcyJPm0Hyc",
     },
     {
       name: "Aerosmith",
@@ -147,6 +163,7 @@ const loadBands = async () => {
       year: 1975,
       genre: "Hard Rock",
       country: "USA",
+      spotifyUri: "album/3S0WkhKMDcLTPVsCUPdAu2",
     },
     {
       name: "The Doors",
@@ -154,6 +171,7 @@ const loadBands = async () => {
       year: 1971,
       genre: "Classic Rock",
       country: "USA",
+      spotifyUri: "album/2XXWbdqDbpL56W2168GPUH",
     },
     {
       name: "Jimi Hendrix",
@@ -161,6 +179,7 @@ const loadBands = async () => {
       year: 1967,
       genre: "Classic Rock",
       country: "USA",
+      spotifyUri: "album/5gzXCdfOJu1jK3K1K5qFcD",
     },
     {
       name: "Van Halen",
@@ -168,6 +187,7 @@ const loadBands = async () => {
       year: 1984,
       genre: "Hard Rock",
       country: "USA",
+      spotifyUri: "album/6HzITiHNcQGJAlAbnIgZtY",
     },
     {
       name: "Ramones",
@@ -175,6 +195,7 @@ const loadBands = async () => {
       year: 1976,
       genre: "Punk Rock",
       country: "USA",
+      spotifyUri: "album/2EHtFiX6sNfJktIFo3M1cj",
     },
     {
       name: "Sex Pistols",
@@ -182,6 +203,7 @@ const loadBands = async () => {
       year: 1977,
       genre: "Punk Rock",
       country: "England",
+      spotifyUri: "album/1SIBEVambCmwAJESlbz3ja",
     },
     {
       name: "Scorpions",
@@ -189,6 +211,7 @@ const loadBands = async () => {
       year: 1982,
       genre: "Hard Rock",
       country: "Deutschland",
+      spotifyUri: "album/4bMhR2YjPFdODwqXaZqCMW",
     },
     {
       name: "U2",
@@ -196,6 +219,7 @@ const loadBands = async () => {
       year: 1987,
       genre: "Alternative",
       country: "Irland",
+      spotifyUri: "album/1WLWXr0OhRU2uFGZKLhZZx",
     },
     {
       name: "Radiohead",
@@ -203,6 +227,7 @@ const loadBands = async () => {
       year: 1997,
       genre: "Alternative",
       country: "England",
+      spotifyUri: "album/6dVIqQ8qmQ5GBnJ9shOYGE",
     },
     {
       name: "Pearl Jam",
@@ -210,6 +235,7 @@ const loadBands = async () => {
       year: 1991,
       genre: "Grunge",
       country: "USA",
+      spotifyUri: "album/1hBHmRUJWAjTzDKojUW0He",
     },
     {
       name: "Foo Fighters",
@@ -217,6 +243,7 @@ const loadBands = async () => {
       year: 1997,
       genre: "Alternative",
       country: "USA",
+      spotifyUri: "album/30ly6F6Xl0TKmyY5Yf0TGL",
     },
   ];
 
@@ -227,8 +254,8 @@ const loadBands = async () => {
     genre: band.genre,
     year: band.year,
     country: band.country,
-    coverUrl: `https://picsum.photos/300/300?random=${i + 1}`,
-    audioUrl: getRandomRockTrack(i),
+    coverUrl: `https://i.scdn.co/image/${band.spotifyUri.split("/")[1]}`,
+    spotifyUri: band.spotifyUri,
   }));
 
   hideLoading();
@@ -273,88 +300,20 @@ const setupNavigationListeners = () => {
  * @param {Event} event - Click Event
  */
 const handleDoorClick = (event) => {
-  const door = event.target.closest(".advent-calendar__door");
-  if (!door) return;
-
-  const day = parseInt(door.dataset.day);
-  if (!isDoorUnlocked(day, appState)) return;
-
-  openModal(day, appState.bands, appState);
-};
-
-document.addEventListener("DOMContentLoaded", initApp);
-
-/**
- * Zeigt nächstes Türchen
- * @function showNextDoor
- */
-const showNextDoor = () => {
-  if (appState.selectedDoor < 24) {
-    openModal(appState.selectedDoor + 1);
+  if (event.target.closest(".advent-calendar__player-wrapper")) {
+    return;
   }
-};
 
-/**
- * Aktualisiert Navigation-Buttons
- * @function updateNavigationButtons
- */
-const updateNavigationButtons = () => {
-  const prevBtn = document.getElementById("modalPrev");
-  const nextBtn = document.getElementById("modalNext");
-
-  prevBtn.disabled = appState.selectedDoor <= 1;
-  hideLoading();
-};
-
-/**
- * Richtet Event Listener ein
- * @function setupEventListeners
- */
-const setupEventListeners = () => {
-  const calendar = document.getElementById("adventCalendar");
-  calendar.addEventListener("click", handleDoorClick);
-
-  const modalClose = document.getElementById("modalClose");
-  modalClose.addEventListener("click", () => closeModal(appState));
-
-  const backdrop = document.querySelector(".modal__backdrop");
-  backdrop.addEventListener("click", () => closeModal(appState));
-
-  setupNavigationListeners();
-};
-
-/**
- * Richtet Modal-Navigation ein
- * @function setupNavigationListeners
- */
-const setupNavigationListeners = () => {
-  const prevBtn = document.getElementById("modalPrev");
-  const nextBtn = document.getElementById("modalNext");
-
-  prevBtn.addEventListener("click", () =>
-    showPreviousDoor(appState.bands, appState)
-  );
-  nextBtn.addEventListener("click", () =>
-    showNextDoor(appState.bands, appState)
-  );
-};
-
-/**
- * Behandelt Klick auf Türchen
- * @function handleDoorClick
- * @param {Event} event - Click Event
- */
-const handleDoorClick = (event) => {
   const door = event.target.closest(".advent-calendar__door");
   if (!door) return;
 
   const day = parseInt(door.dataset.day);
   if (!isDoorUnlocked(day, appState)) return;
 
+  event.preventDefault();
+  event.stopPropagation();
+
   openModal(day, appState.bands, appState);
 };
 
-document.addEventListener("DOMContentLoaded", initApp);
-
-// App starten
 document.addEventListener("DOMContentLoaded", initApp);

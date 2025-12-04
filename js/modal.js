@@ -32,11 +32,7 @@ const populateModal = (band) => {
   document.getElementById("modalYear").textContent = band.year;
   document.getElementById("modalCountry").textContent = band.country;
 
-  const coverImg = document.getElementById("modalCover");
-  coverImg.src = band.coverUrl || "";
-  coverImg.alt = `${band.name} - ${band.album}`;
-
-  updateAudioPlayer(band);
+  updateSpotifyPlayer(band);
 };
 
 /**
@@ -55,7 +51,7 @@ const showModal = () => {
  * @param {Object} state - App State
  */
 export const closeModal = (state) => {
-  pauseAudio();
+  stopSpotifyPlayer();
   const modal = document.getElementById("modalOverlay");
   modal.classList.remove("modal--active");
   document.body.style.overflow = "";
@@ -63,47 +59,34 @@ export const closeModal = (state) => {
 };
 
 /**
- * Aktualisiert den Audio-Player mit Band-Musik
- * @function updateAudioPlayer
+ * Aktualisiert den Spotify-Player
+ * @function updateSpotifyPlayer
  * @param {Object} band - Band-Daten
  */
-const updateAudioPlayer = (band) => {
-  const audioPlayer = document.getElementById("modalAudioPlayer");
-  const audioSource = document.getElementById("modalAudioSource");
-  const audioContainer = document.getElementById("modalAudioContainer");
+const updateSpotifyPlayer = (band) => {
+  const spotifyPlayer = document.getElementById("modalSpotify");
+  const playerWrapper = document.getElementById("modalPlayerWrapper");
 
-  if (band.audioUrl) {
-    audioSource.src = band.audioUrl;
-    audioPlayer.load();
-    audioContainer.style.display = "block";
-    setupAudioErrorHandling(audioPlayer, band);
+  if (band.spotifyUri) {
+    const embedUrl = `https://open.spotify.com/embed/${band.spotifyUri}?utm_source=generator&theme=0`;
+    spotifyPlayer.src = embedUrl;
+    spotifyPlayer.setAttribute(
+      "allow",
+      "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    );
+    playerWrapper.style.display = "block";
   } else {
-    audioContainer.style.display = "none";
+    playerWrapper.style.display = "none";
   }
 };
 
 /**
- * Richtet Fehlerbehandlung für Audio ein
- * @function setupAudioErrorHandling
- * @param {HTMLAudioElement} audioPlayer - Audio-Element
- * @param {Object} band - Band-Daten
+ * Stoppt den Spotify-Player
+ * @function stopSpotifyPlayer
  */
-const setupAudioErrorHandling = (audioPlayer, band) => {
-  audioPlayer.onerror = () => {
-    console.error(`Audio-Fehler für ${band.name}:`, audioPlayer.error);
-    const container = document.getElementById("modalAudioContainer");
-    container.innerHTML =
-      '<p style="color: #ff4444;">Audio nicht verfügbar</p>';
-  };
-};
-
-/**
- * Pausiert die Audio-Wiedergabe
- * @function pauseAudio
- */
-const pauseAudio = () => {
-  const audioPlayer = document.getElementById("modalAudioPlayer");
-  audioPlayer.pause();
+const stopSpotifyPlayer = () => {
+  const spotifyPlayer = document.getElementById("modalSpotify");
+  spotifyPlayer.src = "";
 };
 
 /**
