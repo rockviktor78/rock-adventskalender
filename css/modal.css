@@ -28,14 +28,16 @@
 
 .modal__container {
   position: relative;
-  max-width: 50rem;
-  max-height: 90vh;
+  max-width: 40rem;
+  max-height: 85vh;
   margin: 0 auto;
   background: #2c2c2c;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  overflow-y: auto;
+  overflow: hidden;
   z-index: 1001;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 23.4375rem) {
@@ -77,16 +79,21 @@
 }
 
 .modal__content {
-  padding: var(--spacing-xl);
+  padding: var(--spacing-md);
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal__player-wrapper {
   width: 100%;
-  height: 23.75rem;
+  height: 15rem;
   border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
   overflow: hidden;
   background: #121212;
+  flex-shrink: 0;
 }
 
 @media (max-width: 48rem) {
@@ -250,12 +257,13 @@
 }
 
 .modal__image-wrapper {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  flex-shrink: 0;
 }
 
 .modal__cover {
   width: 100%;
-  max-width: 25rem;
+  max-width: 18rem;
   height: auto;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
@@ -264,27 +272,29 @@
 }
 
 .modal__details {
-  margin-top: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+  flex-shrink: 0;
 }
 
 .modal__band-name {
   font-family: var(--font-display);
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
   margin-bottom: var(--spacing-xs);
   color: var(--color-today);
 }
 
 .modal__album-title {
-  font-size: var(--font-size-xl);
-  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
   color: var(--color-text-muted);
 }
 
 .modal__info {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+  flex-shrink: 0;
 }
 
 .modal__info-item {
@@ -310,21 +320,22 @@
 .modal__navigation {
   display: flex;
   justify-content: space-between;
-  padding: var(--spacing-md) var(--spacing-xl);
+  padding: var(--spacing-sm) var(--spacing-md);
   border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
 }
 
 .modal__nav-button {
   background-color: var(--color-primary);
   color: var(--color-text);
   border: none;
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   cursor: pointer;
   transition: background-color var(--transition-fast);
-  min-width: 3.125rem;
-  min-height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.5rem;
 }
 
 .modal__nav-button:hover {
