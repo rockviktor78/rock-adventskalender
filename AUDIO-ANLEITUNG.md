@@ -1,115 +1,189 @@
-# 🎸 MP3-Dateien einbinden - Schnellanleitung
+# 🎸 Rock-Adventskalender - Persönliche Musiksammlung
 
-## So bindest du deine eigenen MP3s ein:
+## Deine 24 Rock-Songs im Adventskalender
 
-### Schritt 1: Dateien vorbereiten
-
-Kopiere deine 24 MP3-Dateien (eine pro Band) in den Ordner `assets/audio/`
-
-### Schritt 2: Dateien umbenennen
-
-Benenne die Dateien **exakt** wie folgt:
+Diese MP3-Dateien befinden sich in `assets/audio/` und werden automatisch geladen:
 
 ```
-led-zeppelin.mp3
-acdc.mp3
-queen.mp3
-pink-floyd.mp3
-rolling-stones.mp3
-deep-purple.mp3
-black-sabbath.mp3
-metallica.mp3
-nirvana.mp3
-beatles.mp3
-the-who.mp3
-iron-maiden.mp3
-guns-n-roses.mp3
-aerosmith.mp3
-the-doors.mp3
-jimi-hendrix.mp3
-van-halen.mp3
-ramones.mp3
-sex-pistols.mp3
-scorpions.mp3
-u2.mp3
-radiohead.mp3
-pearl-jam.mp3
-foo-fighters.mp3
+Tag 1:  Linkin Park - And One.mp3
+Tag 2:  Metallica - Devils Dance.mp3
+Tag 3:  Metallica - Harvester Of Sorrow.mp3
+Tag 4:  Nickelback - How You Remind Me.mp3
+Tag 5:  Nickelback - Yanking Out My Heart.mp3
+Tag 6:  Nightwish - Nemo.mp3
+Tag 7:  P.O.D. - Alive.mp3
+Tag 8:  P.O.D. - Youth Of The Nation.mp3
+Tag 9:  Queen - We Are The Champions.mp3
+Tag 10: Rammstein - Amerika.mp3
+Tag 11: Rammstein - Du Hast.mp3
+Tag 12: Rammstein - Du Hast.mp3
+Tag 13: Rammstein - Engel.mp3
+Tag 14: Rammstein - Mutter.mp3
+Tag 15: Rammstein - Sonne.mp3
+Tag 16: Red Hot Chili Peppers - Californication.mp3
+Tag 17: Red Hot Chili Peppers - Give It Away Now.mp3
+Tag 18: Rob Zombie - Dragula.mp3
+Tag 19: Slipknot - Before I Forget.mp3
+Tag 20: System Of A Down - Chop Suey.mp3
+Tag 21: System Of A Down - Toxicity.mp3
+Tag 22: The Offspring - Pretty Fly For A White Guy.mp3
+Tag 23: The Offspring - The Kids Aren't Alright.mp3
+Tag 24: The Rolling Stones - Sympathy For The Devil.mp3
 ```
-
-### Schritt 3: Testen
-
-1. Starte den Server: `python3 -m http.server 8002`
-2. Öffne im Browser: `http://localhost:8002`
-3. Klicke auf ein geöffnetes Türchen
-4. Der Song sollte automatisch abspielen!
 
 ---
 
-## ⚡ Schnelltest ohne eigene MP3s
+## 🎵 So funktioniert der Adventskalender
 
-Falls du erstmal nur testen willst, kannst du auch Beispiel-MP3s verwenden:
+### Türchen öffnen
 
-### Option 1: Free Music Archive
+- **Verfügbare Türchen** (1. bis 5. Dezember): Klickbar und zeigen Band-Details
+- **Zukünftige Türchen** (6. bis 24. Dezember): Gesperrt, aber 5-Sekunden-Preview möglich
+- **Preview**: Klick auf gesperrte Türchen spielt 5 Sekunden Song + zeigt Album-Cover
 
-```bash
-cd assets/audio
-wget https://freemusicarchive.org/file/music/...beispiel.mp3 -O led-zeppelin.mp3
+### Audio-Player
+
+- Öffnet sich automatisch beim Klick auf ein verfügbares Türchen
+- HTML5 Audio-Player mit Play/Pause, Lautstärke und Zeitanzeige
+- Autoplay aktiviert (falls Browser erlaubt)
+
+---
+
+## 🔧 Eigene Songs hinzufügen/austauschen
+
+### Song austauschen
+
+1. Neue MP3-Datei in `assets/audio/` kopieren
+2. Datei benennen im Format: `Bandname - Songtitel.mp3`
+3. In `script.js` den entsprechenden Eintrag anpassen:
+
+```javascript
+{
+  name: "Deine Band",
+  album: "Album-Name",
+  song: "Songtitel",  // wird automatisch aus Dateinamen gelesen
+  year: 2024,
+  genre: "Rock",
+  country: "Land",
+  audioFile: "assets/audio/Deine Band - Songtitel.mp3",
+  image: "assets/images/bandname.png",
+}
 ```
 
-### Option 2: Test-Audiodatei erstellen
+### Album-Cover ändern
 
-```bash
-# Erstelle eine stille 5-Sekunden MP3 zum Testen
-ffmpeg -f lavfi -i anullsrc=r=44100:cl=stereo -t 5 -acodec libmp3lame assets/audio/test.mp3
-```
+1. PNG-Datei in `assets/images/` kopieren (empfohlen: 500x500px)
+2. Dateiname ohne Leerzeichen/Sonderzeichen (z.B. `bandname.png`)
+3. In `script.js` den `image`-Pfad anpassen
 
 ---
 
 ## 🔧 Problembehebung
 
-### Problem: "Datei nicht gefunden"
+### Problem: "404 - Datei nicht gefunden"
 
-- Prüfe Dateinamen (genau wie oben, kleinschreibung!)
-- Prüfe dass die Dateien in `assets/audio/` liegen
+- Prüfe Dateinamen in `assets/audio/` (Format: `Band - Song.mp3`)
+- Prüfe Bildnamen in `assets/images/` (keine Leerzeichen/Sonderzeichen)
+- Überprüfe Pfade in `script.js` (audioFile + image)
 
 ### Problem: "Audio spielt nicht ab"
 
-- Browser-Konsole öffnen (F12)
-- Schaue nach Fehlermeldungen
-- Prüfe ob Dateiformat MP3 ist (nicht M4A, WAV, etc.)
+- Browser-Konsole öffnen (F12) → Fehlermeldungen prüfen
+- Prüfe ob Dateiformat MP3 ist (nicht M4A, WAV, FLAC, etc.)
+- Teste mit anderem Browser (Chrome, Firefox, Edge)
 
 ### Problem: "Autoplay blockiert"
 
-- Manche Browser blockieren Autoplay
-- Klicke einmal auf die Seite, dann funktioniert es
+- Manche Browser blockieren Autoplay beim ersten Besuch
+- Einmal auf Seite klicken oder interagieren, dann funktioniert es
+- Chrome/Firefox: Autoplay-Einstellungen für localhost erlauben
+
+### Problem: "Bilder laden nicht"
+
+- Dateinamen dürfen **keine** Leerzeichen oder Sonderzeichen enthalten
+- Erlaubt: `bandname.png`, `band-name.png`, `BandName.png`
+- Nicht erlaubt: `band name.png`, `"band".png`, ` band.png` (Leerzeichen)
 
 ---
 
-## 📁 Deine Dateistruktur sollte so aussehen:
+## 🚀 Server starten
+
+```bash
+# Im Projekt-Ordner:
+python3 -m http.server 8002
+
+# Dann im Browser öffnen:
+# http://localhost:8002
+```
+
+**Alternative Ports** (falls 8002 belegt):
+
+```bash
+python3 -m http.server 8000
+python3 -m http.server 8080
+python3 -m http.server 3000
+```
+
+---
+
+## 📁 Aktuelle Dateistruktur
 
 ```
 rock-adventskalender/
 ├── assets/
-│   ├── audio/
-│   │   ├── led-zeppelin.mp3     ← Deine MP3s hier
-│   │   ├── acdc.mp3
-│   │   ├── queen.mp3
+│   ├── audio/                           ← 24 MP3-Dateien
+│   │   ├── Linkin Park - And One.mp3
+│   │   ├── Metallica - Devils Dance.mp3
+│   │   ├── Queen - We Are The Champions.mp3
 │   │   └── ... (24 Dateien insgesamt)
-│   └── images/
-│       └── ...
+│   ├── images/                          ← 24 Album-Cover (PNG)
+│   │   ├── JimiHendrix.png
+│   │   ├── queen.png
+│   │   ├── metallica.png
+│   │   └── ... (24 Dateien insgesamt)
+│   └── icons/
 ├── js/
+│   ├── calendar.js                      ← Kalender-Logik
+│   ├── modal.js                         ← Modal-Ansicht
+│   ├── music-api.js                     ← (optional, aktuell nicht genutzt)
+│   └── ui-helpers.js                    ← UI-Hilfsfunktionen
 ├── css/
-├── index.html
-└── script.js
+│   ├── global.css                       ← Globale Styles
+│   ├── calendar.css                     ← Kalender-Styles
+│   └── modal.css                        ← Modal-Styles
+├── index.html                           ← Hauptdatei
+├── script.js                            ← Einstiegspunkt (24 Band-Daten)
+├── style.css                            ← CSS-Import
+└── AUDIO-ANLEITUNG.md                   ← Diese Datei
 ```
 
-## ✅ Checkliste
+---
 
-- [ ] 24 MP3-Dateien bereit
-- [ ] Dateien in `assets/audio/` kopiert
-- [ ] Dateien korrekt umbenannt (siehe Liste oben)
-- [ ] Server gestartet (`python3 -m http.server 8002`)
-- [ ] Im Browser getestet (`http://localhost:8002`)
+## ✅ Feature-Checkliste
 
-**Viel Erfolg! 🎵**
+- [x] 24 MP3-Dateien in `assets/audio/`
+- [x] 24 Album-Cover in `assets/images/`
+- [x] Datums-basierte Türchen-Freischaltung (1.-24. Dezember)
+- [x] HTML5 Audio-Player mit Autoplay
+- [x] Gesperrte Türchen: 5-Sekunden-Preview (Audio + Cover)
+- [x] Song-Titel automatisch aus MP3-Dateinamen extrahiert
+- [x] Scroll-to-Top Button (erscheint ab 100px Scroll)
+- [x] Responsive Design (Mobile-First, 320px - Desktop)
+- [x] Alle Bilder ohne Leerzeichen/Sonderzeichen
+
+---
+
+## 🎸 Deine persönliche Rock-Sammlung
+
+**Genre-Verteilung:**
+
+- Nu Metal: Linkin Park, P.O.D., Slipknot
+- Heavy Metal: Metallica
+- Alternative Rock: Nickelback, The Offspring, System of a Down
+- Symphonic Metal: Nightwish
+- Classic Rock: Queen, The Rolling Stones
+- Neue Deutsche Härte: Rammstein (6 Songs!)
+- Alternative/Funk Rock: Red Hot Chili Peppers
+- Industrial Metal: Rob Zombie
+
+**Viel Spaß mit deinem Rock-Adventskalender! 🎵🎸**
